@@ -3,11 +3,10 @@
 from slackclient import SlackClient
 from signal import pause
 from time import sleep
-from gpiozero import Button, Buzzer, OutputDevice
+from gpiozero import Buzzer
 from picamera import PiCamera
 
 buzzer = Buzzer(17, active_high=False)
-diode = OutputDevice(26)
 camera = PiCamera()
 
 # Set camera parameters
@@ -25,12 +24,10 @@ slack_message = "<!channel> There is food in the large kitchen!"
 
 # Capture image
 def capture_image ():
-    diode.on()
     sleep (5)
     camera.start_preview()
     buzzer.beep(on_time=.10, off_time=.50, n=3, background=False)
     buzzer.beep(on_time=.25, off_time=.75, n=1, background=False)
-    diode.off()
     sleep(1)
     camera.capture(imgoutputpath)
     camera.stop_preview()
